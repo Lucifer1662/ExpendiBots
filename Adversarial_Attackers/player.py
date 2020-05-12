@@ -4,6 +4,7 @@ import json
 import math
 import random
 import numpy as np
+import time
 
 _BLACK_START_SQUARES = [(1,0,7), (1,1,7),   (1,3,7), (1,4,7),   (1,6,7), (1,7,7),
                         (1,0,6), (1,1,6),   (1,3,6), (1,4,6),   (1,6,6), (1,7,6)]
@@ -18,9 +19,16 @@ class MainPlayer:
         self.board = Board(board, colour)
         self.colour = colour  
         self.visted = {}
+        self.totalTime = 0
 
 
     def action(self):
+        start = time.time()
+
+        depth = None
+        if(self.totalTime >= 50):
+            depth = 1
+
         bhash = self.board.to_hashable()
         #if previously visiten chosen the second action to avoid
         #repeated states
@@ -33,9 +41,13 @@ class MainPlayer:
         
         #else use AI to determine Move
         else:
-            actions = determineMove(self.board.copy())
+            actions = determineMove(self.board.copy(), depth)
             action = actions[0][1]
             self.visted[bhash] = actions
+
+        end = time.time()
+        duration = end - start
+        self.totalTime += duration
 
         if(action == None):
             return ("BOOM", ())

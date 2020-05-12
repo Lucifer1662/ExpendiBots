@@ -181,12 +181,9 @@ def goodCutOff(board: Board):
 
 
 #a wrapper to make it easier to call the AI
-def determineMove(board):
-    return MinMax0(board, 0, True, -math.inf, math.inf, goodCutOff(board))
+def determineMove(board, depth):
+    if(depth == None):
+        depth = goodCutOff(board)
+    return MinMax0(board, 0, True, -math.inf, math.inf, depth)
     
-
-
-def determineMoveRes(board):
-    return MinMax0(board, 0, True, -math.inf, math.inf, 2)
-
 
